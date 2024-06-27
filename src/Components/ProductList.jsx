@@ -50,12 +50,17 @@ const ProductList = ({SelectCategory}) => {
 
   ];
 
- const filterProducts = SelectCategory ? products.filter(product => product.name === SelectCategory) : products
+ //const filterProducts = SelectCategory ? products.filter(product => product.name === SelectCategory) : products
 
+ const filterProducts = SelectCategory && SelectCategory !== "All Products"
+  ? products.filter(product => product.name === SelectCategory)
+  : products;
+
+  
   return (
-      <Grid container  spacing={1}   sx={{ marginTop: 22,  }}>
+      <Grid container  spacing={1}   sx={{ marginTop: 5,  }}>
         {filterProducts.map((product) => (
-          <Grid key={product.id} item xs={4} sm={6} md={4} lg={2}  sx={{marginBottom:{lg:-2, xs:-5}}}>
+          <Grid key={product.id} item xs={4} sm={6} md={4} lg={2}  sx={{marginBottom:{lg:-2, xs:-5}, marginTop:{xs:-2.5, lg:-1}}}>
             <Paper
               sx={{
                 py: 3,
@@ -86,9 +91,9 @@ const ProductList = ({SelectCategory}) => {
                   height: { xs: '10%', lg: 50 }
                 }}
               />
-              <Typography variant="h6" sx={{ fontSize: { xs: 10, lg: 20 } }}>{product.name}</Typography>
+              <Typography variant="h6" sx={{ fontSize: { xs: 10, lg: 20, color:'black' } }}>{product.name}</Typography>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', }}>
-                <Typography variant="body1" sx={{ fontWeight: '400px', fontSize: { xs: '10px', lg: '20px' } }}>{`₭ ${product.price.toLocaleString()}`}</Typography>
+                <Typography variant="body1" sx={{ fontWeight: '400px',fontFamily:'blod',color:'#191A1A', fontSize: { xs: '10px', lg: '20px' } }}>{`₭ ${product.price.toLocaleString()}`}</Typography>
                 <AddShoppingCartIcon sx={{
                   backgroundColor: '#048BC9',
                   pr: 1,
