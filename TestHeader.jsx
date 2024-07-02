@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -97,7 +96,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const Header = () => {
-
+   
 
     const theme = useTheme();
     const navigate = useNavigate();
@@ -120,18 +119,14 @@ const Header = () => {
         setSelectCategory(searchTerm === '' ? '' : searchTerm);
     };
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            handleSearchClick();
-        }
-    };
+
 
 
     return (
         <Box>
             <AppBar component='nav' sx={{ padding: '10px' }}>
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', width: { md: '100%' } }}>
-                    <FormControl sx={{ width: { xs: '50%', lg: '21%' }, mt: 2, marginLeft: { xs: 3, lg: -1 } }} className='form'>
+                    <FormControl sx={{ width: { xs: '68%', sm: 300 }, mt: 2, marginLeft: { xs: -0.5 } }} className='form'>
                         <Select
                             sx={{
                                 '& .MuiOutlinedInput-notchedOutline': {
@@ -193,7 +188,6 @@ const Header = () => {
                             inputProps={{ 'aria-label': 'search' }}
                             value={searchTerm}
                             onChange={handleSearchChange}
-                            onKeyDown={handleKeyDown}
                             sx={{
                                 color: 'gray',
                                 width: '100%',  // Use the full width of the Search component
@@ -225,7 +219,3 @@ const Header = () => {
 }
 
 export default Header
-
-
-
-

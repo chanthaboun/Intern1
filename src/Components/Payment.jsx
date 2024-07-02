@@ -18,6 +18,7 @@ const Payment = () => {
   const [alertMessage, setAlertMessage] = useState('');
   const [totalPrice, setTotalPrice] = useState(0); // Ensure totalPrice is a number
   const [itemCount, setItemCount] = useState(0);
+  const [alertColor, setAlertColor] = useState(''); // State for alert background color
 
   useEffect(() => {
     if (location.state) {
@@ -47,9 +48,14 @@ const Payment = () => {
     navigate('/cart-product');
   };
 
+  
+
+
+  // New Code
   const handleConfirmPayment = () => {
     if (isScanned) {
       setAlertMessage('ຊຳລະເງິນສຳເລັດ');
+      setAlertColor('#2cdb66'); // Success color
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
@@ -59,26 +65,23 @@ const Payment = () => {
     }
   };
 
-  const handleCancel = () => {
-    if (isScanned) {
-      setIsScanned(false);
-      setSelectedFile(null);
-      setPreviewUrl(null);
-      setAlertMessage('ຍົກເລີກສຳເລັດ');
-      setShowAlert(true);
-      setTimeout(() => {
-        setShowAlert(false);
-      }, 2000);
-    }
-  };
+// New code 
+const handleCancel = () => {
+  if (isScanned) {
+    setIsScanned(false);
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setAlertMessage('ຍົກເລີກສຳເລັດ');
+    setAlertColor('#d93f59'); // Cancel color
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 2000);
+  }
+};
 
   return (
     <Box sx={{ maxWidth: '500px', margin: 'auto', boxShadow: 4, p: { lg: 4, xs: 0.5 } }}>
-      {showAlert && (
-        <Alert severity="success" sx={{ mb: 2 }}>
-          {alertMessage}
-        </Alert>
-      )}
       <IconButton sx={{ mr: 1 }}>
         <RefreshIcon onClick={handleRefresh} />
       </IconButton>
@@ -118,6 +121,25 @@ const Payment = () => {
           </Typography>
         </Box>
 
+         {showAlert && (
+          <Alert severity="success" sx={{
+            mb: 2,
+            fontFamily: "'Noto Sans Lao', sans-serif",
+            width: '150px',
+            height: '150px',
+            position: 'fixed',
+            top: {lg:'50%', xs:'30%'},
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            backgroundColor: alertColor // Dynamic background color
+          }}>
+            {alertMessage}
+          </Alert>
+        )}
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={6}>
             <Box sx={{ textAlign: 'center' }}>
@@ -128,22 +150,8 @@ const Payment = () => {
               />
             </Box>
           </Grid>
-
-          <Grid item xs={6}>
-            <Paper elevation={0} sx={{ p: 2, border: '1px dashed grey', textAlign: 'center' }}>
-              {previewUrl ? (
-                <Box sx={{ mb: 2 }}>
-                  <img src={previewUrl} alt="Preview" style={{ maxWidth: '100%', maxHeight: '150px' }} />
-                </Box>
-              ) : (
-                <CloudUploadIcon sx={{ fontSize: 40, color: 'grey' }} />
-              )}
-              <Typography variant="body1" sx={{ mt: 1, fontSize: { xs: 20 }, fontFamily: "'Noto Sans Lao', sans-serif" }}>
-                ອັບໂຫລດໃບບິນ
-              </Typography>
-              <Typography variant="caption" sx={{ display: 'block', color: 'grey' }}>
-                {selectedFile ? selectedFile.name : 'No file'}
-              </Typography>
+        <Grid item xs={6}>
+            <Paper elevation={0} sx={{ p: 2, textAlign: 'center', width: '150px', height: '150px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
               <input
                 accept="image/*"
                 style={{ display: 'none' }}
@@ -151,18 +159,31 @@ const Payment = () => {
                 type="file"
                 onChange={handleFileChange}
               />
+              {previewUrl ? (
+                <Box sx={{ mt: 2, width: '100%', height: '100%' }}>
+                  <img src={previewUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </Box>
+              ) : (
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                  <CloudUploadIcon sx={{ fontSize: 40, color: 'grey' }} />
+                  <Typography variant="body1" sx={{ mt: 1, fontSize: { xs: 20 }, fontFamily: "'Noto Sans Lao', sans-serif" }}>
+                    ອັບໂຫລດໃບບິນ
+                  </Typography>
+                </Box>
+              )}
               <label htmlFor="raised-button-file">
                 <Button
                   variant="outlined"
                   component="span"
                   size="small"
-                  sx={{ mt: 1, textTransform: 'none', fontFamily: "'Noto Sans Lao', sans-serif" }}
+                  sx={{ textTransform: 'none', fontFamily: "'Noto Sans Lao', sans-serif" }}
                 >
                   ເລືອກຮູບ
                 </Button>
               </label>
             </Paper>
           </Grid>
+
         </Grid>
       </Box>
       <Grid container spacing={3} sx={{ marginTop: { xs: -1 } }}>
@@ -200,3 +221,13 @@ const Payment = () => {
 };
 
 export default Payment;
+
+
+
+
+
+
+
+
+
+
