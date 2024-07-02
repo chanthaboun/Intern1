@@ -16,8 +16,8 @@ const CartProduct = () => {
         if (cartItems.length === 0) {
             setShowWarning(true)
         } else {
-            clearCart();
             navigate('/payment', { state: { totalPrice, totalPoints, itemCount: cartItems.length } });
+            clearCart();
         }
     };
 

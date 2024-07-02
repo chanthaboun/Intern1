@@ -1,4 +1,3 @@
-//// Payment Code 
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, Grid, Paper, IconButton, Alert } from '@mui/material';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
@@ -16,14 +15,14 @@ const Payment = () => {
   const [isScanned, setIsScanned] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-  const [totalPrice, setTotalPrice] = useState(0); // Ensure totalPrice is a number
+  const [totalPrice, setTotalPrice] = useState(0);
   const [itemCount, setItemCount] = useState(0);
-  const [alertColor, setAlertColor] = useState(''); // State for alert background color
+  const [alertColor, setAlertColor] = useState('');
 
   useEffect(() => {
     if (location.state) {
-      setTotalPrice(location.state.totalPrice || 0); // Fallback to 0 if undefined
-      setItemCount(location.state.itemCount || 0); // Fallback to 0 if undefined
+      setTotalPrice(location.state.totalPrice || 0);
+      setItemCount(location.state.itemCount || 0);
     }
   }, [location]);
 
@@ -48,14 +47,10 @@ const Payment = () => {
     navigate('/cart-product');
   };
 
-  
-
-
-  // New Code
   const handleConfirmPayment = () => {
     if (isScanned) {
       setAlertMessage('ຊຳລະເງິນສຳເລັດ');
-      setAlertColor('#2cdb66'); // Success color
+      setAlertColor('#2cdb66');
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
@@ -65,25 +60,24 @@ const Payment = () => {
     }
   };
 
-// New code 
-const handleCancel = () => {
-  if (isScanned) {
-    setIsScanned(false);
-    setSelectedFile(null);
-    setPreviewUrl(null);
-    setAlertMessage('ຍົກເລີກສຳເລັດ');
-    setAlertColor('#d93f59'); // Cancel color
-    setShowAlert(true);
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 2000);
-  }
-};
+  const handleCancel = () => {
+    if (isScanned) {
+      setIsScanned(false);
+      setSelectedFile(null);
+      setPreviewUrl(null);
+      setAlertMessage('ຍົກເລີກສຳເລັດ');
+      setAlertColor('#d93f59');
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 2000);
+    }
+  };
 
   return (
     <Box sx={{ maxWidth: '500px', margin: 'auto', boxShadow: 4, p: { lg: 4, xs: 0.5 } }}>
-      <IconButton sx={{ mr: 1 }}>
-        <RefreshIcon onClick={handleRefresh} />
+      <IconButton sx={{ mr: 1 }} onClick={handleRefresh}>
+        <RefreshIcon />
       </IconButton>
       <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', mb: 2, fontFamily: "'Noto Sans Lao', sans-serif" }}>
         ວິທີຊຳລະເງິນຄ່າສິນຄ້າ
@@ -135,7 +129,7 @@ const handleCancel = () => {
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-            backgroundColor: alertColor // Dynamic background color
+            backgroundColor: alertColor
           }}>
             {alertMessage}
           </Alert>
@@ -221,13 +215,3 @@ const handleCancel = () => {
 };
 
 export default Payment;
-
-
-
-
-
-
-
-
-
-

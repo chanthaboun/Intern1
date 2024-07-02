@@ -12,7 +12,7 @@ const SalesHistory = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const location = useLocation();
 
-  useEffect(() => {
+useEffect(() => {
     // Load sales data from local storage
     const storedSalesData = JSON.parse(localStorage.getItem('salesData')) || [];
     setSalesData(storedSalesData);
@@ -26,7 +26,7 @@ const SalesHistory = () => {
       };
 
       // Check if the entry already exists
-      const exists = storedSalesData.some(sale => 
+      const exists = storedSalesData.some(sale =>
         sale.orderDate === newSale.orderDate && sale.quantity === newSale.quantity
       );
 
@@ -61,24 +61,7 @@ const SalesHistory = () => {
     }
   };
 
-  const handleExport = () => {
-    // Prepare data for export
-    const exportData = filteredData.map(sale => ({
-      'Invoice Number': sale.invoiceNumber,
-      'Order Date': sale.orderDate,
-      'Quantity': sale.quantity
-    }));
 
-    // Create a new workbook and worksheet
-    const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(exportData);
-
-    // Append the worksheet to the workbook
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sales History');
-
-    // Generate Excel file and trigger download
-    XLSX.writeFile(workbook, 'sales_history.xlsx');
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -88,6 +71,29 @@ const SalesHistory = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+
+  // Export to Excel function 
+  const handleExport = () => {
+    // Prepare data for export
+    const exportData = filteredData.map(sale => ({
+      'ເລກທີບິນ': sale.invoiceNumber,
+      'ວັນທີ່ຊັ່ງຊື້': sale.orderDate,
+      'ຈຳນວນສິນຄ້າ': sale.quantity
+    }));
+    // Create a new workbook and worksheet
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+
+    // Append the worksheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sales History');
+
+    // Generate Excel file and trigger download
+    XLSX.writeFile(workbook, 'sales_history.xlsx');
+
+  }
+
+  
 
   return (
     <Box>
@@ -101,6 +107,34 @@ const SalesHistory = () => {
       >
         ປະຫວັດການຂາຍ
       </Typography>
+      {/* <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
+        <Box display="flex" alignItems="center" sx={{ display: { xs: 'flex' } }}>
+          <TextField
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            size='small'
+            sx={{ width: { xs: '150px' }, }}
+          />
+          <Typography sx={{ fontFamily: "'Noto Sans Lao', sans-serif" }} mx={0.5}>ຫາ</Typography>
+          <TextField
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            size='small'
+            sx={{ width: { xs: '150px' } }}
+          />
+          <Button sx={{ width: { xs: '80px' }, height: { xs: '40px' }, marginLeft: { xs: 0.5 }, backgroundColor: "#0EA2D5" }} onClick={handleExport}>
+            <Typography sx={{ fontSize: { xs: '10px' }, color: '#fff' }}>Export to Excel</Typography>
+          </Button>
+        </Box>
+      </Box> */}
       <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
         <Box display="flex" alignItems="center" sx={{ display: { xs: 'flex' } }}>
           <TextField
@@ -155,13 +189,18 @@ const SalesHistory = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-              <TableRow key={row.invoiceNumber}>
-                <TableCell>{row.invoiceNumber}</TableCell>
-                <TableCell>{row.orderDate}</TableCell>
-                <TableCell>{row.quantity}</TableCell>
+            {filteredData.length === 0 ? (
+              <TableRow>
               </TableRow>
-            ))}
+            ) : (
+              filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                <TableRow key={row.invoiceNumber}>
+                  <TableCell>{row.invoiceNumber}</TableCell>
+                  <TableCell>{row.orderDate}</TableCell>
+                  <TableCell>{row.quantity}</TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
         <TablePagination
@@ -179,8 +218,6 @@ const SalesHistory = () => {
 };
 
 export default SalesHistory;
-
-
 
 
 
