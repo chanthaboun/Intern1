@@ -62,5 +62,4 @@ const DetailProduct = () => {
         </Box>
     );
 };
-
 export default DetailProduct;
