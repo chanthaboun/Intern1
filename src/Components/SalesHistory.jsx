@@ -12,7 +12,7 @@ const SalesHistory = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const location = useLocation();
 
-useEffect(() => {
+  useEffect(() => {
     // Load sales data from local storage
     const storedSalesData = JSON.parse(localStorage.getItem('salesData')) || [];
     setSalesData(storedSalesData);
@@ -48,8 +48,9 @@ useEffect(() => {
   };
 
   const filterData = () => {
+    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
     if (!startDate && !endDate) {
-      setFilteredData(salesData);
+      setFilteredData(salesData.filter(sale => sale.orderDate === today));
     } else {
       const filtered = salesData.filter(sale => {
         const saleDate = new Date(sale.orderDate);
@@ -61,8 +62,6 @@ useEffect(() => {
     }
   };
 
-
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -71,7 +70,6 @@ useEffect(() => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
 
   // Export to Excel function 
   const handleExport = () => {
@@ -90,10 +88,7 @@ useEffect(() => {
 
     // Generate Excel file and trigger download
     XLSX.writeFile(workbook, 'sales_history.xlsx');
-
-  }
-
-  
+  };
 
   return (
     <Box>
@@ -107,34 +102,6 @@ useEffect(() => {
       >
         ປະຫວັດການຂາຍ
       </Typography>
-      {/* <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
-        <Box display="flex" alignItems="center" sx={{ display: { xs: 'flex' } }}>
-          <TextField
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            size='small'
-            sx={{ width: { xs: '150px' }, }}
-          />
-          <Typography sx={{ fontFamily: "'Noto Sans Lao', sans-serif" }} mx={0.5}>ຫາ</Typography>
-          <TextField
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            size='small'
-            sx={{ width: { xs: '150px' } }}
-          />
-          <Button sx={{ width: { xs: '80px' }, height: { xs: '40px' }, marginLeft: { xs: 0.5 }, backgroundColor: "#0EA2D5" }} onClick={handleExport}>
-            <Typography sx={{ fontSize: { xs: '10px' }, color: '#fff' }}>Export to Excel</Typography>
-          </Button>
-        </Box>
-      </Box> */}
       <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
         <Box display="flex" alignItems="center" sx={{ display: { xs: 'flex' } }}>
           <TextField
@@ -218,7 +185,6 @@ useEffect(() => {
 };
 
 export default SalesHistory;
-
 
 
 
